@@ -1,0 +1,17 @@
+.git
+.gitignore
+.github
+.idea
+.vscode
+**/target
+target
+debug
+node_modules
+**/node_modules
+wasm/pkg
+pkg
+dist
+coverage
+docker/build
+*.log
+*.pdb

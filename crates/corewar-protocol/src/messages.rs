@@ -4,15 +4,19 @@ use serde::{Deserialize, Serialize};
 pub const PROTOCOL_VERSION: u32 = 1;
 
 /// Client-to-server messages.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "type")]
 pub enum ClientMessage {
+    /// Request the list of active and historical battle instances.
+    ListInstances,
     /// Subscribe to updates from a specific battle instance.
     Subscribe { instance_id: String },
     /// Unsubscribe from an instance.
     Unsubscribe { instance_id: String },
     /// Request current leaderboard state.
     LeaderboardQuery { top_n: usize },
+    /// Upload a warrior source file for compilation and registration.
+    LoadWarrior { source: String },
     /// Start a new tournament.
     StartTournament { warrior_ids: Vec<String> },
     /// Pause/resume a running instance.
@@ -20,11 +24,18 @@ pub enum ClientMessage {
 }
 
 /// Server-to-client messages.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "type")]
 pub enum ServerMessage {
     /// Protocol version negotiation response.
     Hello { version: u32 },
+    /// List of instances available to subscribe to.
+    InstanceList { instances: Vec<InstanceInfo> },
+    /// Full core state for a specific instance.
+    CoreSnapshot {
+        instance_id: String,
+        cells: Vec<CellInfo>,
+    },
     /// Batch of cycle events for visualization.
     CycleEvents {
         instance_id: String,
@@ -42,9 +53,46 @@ pub enum ServerMessage {
     Error { message: String },
 }
 
+/// Summary information for an instance in the orchestrator.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct InstanceInfo {
+    pub id: String,
+    pub warrior_names: Vec<String>,
+    pub core_size: usize,
+    pub cycle: u64,
+    pub status: InstanceStatus,
+}
+
+/// Runtime status for an instance.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub enum InstanceStatus {
+    Running,
+    Paused,
+    Complete,
+}
+
+/// Summary information for a warrior participating in an instance.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct WarriorInfo {
+    pub id: u32,
+    pub name: String,
+    pub author: String,
+    pub process_count: usize,
+    pub color_index: u32,
+}
+
+/// Snapshot information for a single core cell.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct CellInfo {
+    pub address: usize,
+    pub owner: Option<u32>,
+    pub instruction_summary: String,
+}
+
 /// A single event within a cycle (for visualization).
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum CycleEvent {
+    Read { address: usize, warrior_id: u32 },
     Write { address: usize, warrior_id: u32 },
     Execute { address: usize, warrior_id: u32 },
     ProcessCreated { warrior_id: u32, address: usize },
@@ -52,14 +100,14 @@ pub enum CycleEvent {
 }
 
 /// Battle result as transmitted over the wire.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum BattleResultMsg {
     Win { winner: String },
     Draw { survivors: Vec<String> },
 }
 
 /// A single leaderboard entry.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct LeaderboardEntry {
     pub warrior_name: String,
     pub rating: f64,

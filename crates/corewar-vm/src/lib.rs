@@ -8,10 +8,22 @@
 #[cfg(not(feature = "std"))]
 extern crate alloc;
 
+pub mod address;
 pub mod battle;
 pub mod config;
 pub mod executor;
+pub mod recorder;
+pub mod replay;
+#[cfg(feature = "wasm")]
+pub mod wasm_api;
+#[cfg(feature = "wasm")]
+pub mod wasm_utils;
 
-pub use battle::Battle;
+pub use battle::{
+    Battle, BattleConfig, BattleObserver, BattleResult, BattleSetup, BattleStats, RoundResult,
+    ScoringMode, WarriorPlacement,
+};
 pub use config::VmConfig;
 pub use executor::Executor;
+pub use recorder::{EventRecorder, EventSnapshot};
+pub use replay::{Replay, ReplayBuilder};

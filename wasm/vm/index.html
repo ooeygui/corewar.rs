@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CoreWar VM WASM Test</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: system-ui, sans-serif;
+      background: #10131a;
+      color: #f5f7ff;
+    }
+
+    pre {
+      padding: 16px;
+      border-radius: 8px;
+      background: #171c26;
+      overflow: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>CoreWar VM WASM Test</h1>
+  <p>Loads Imp and Dwarf, runs the battle, and prints the result.</p>
+  <pre id="output">Loading...</pre>
+  <script type="module">
+    import init, { WasmBattle } from "./pkg/corewar_vm.js";
+
+    const output = document.getElementById("output");
+    const imp = `;name Imp
+MOV 0, 1
+`;
+    const dwarf = `;name Dwarf
+ADD #4, 3
+MOV 2, @2
+JMP -2
+DAT #0, #0
+`;
+
+    try {
+      await init();
+      const battle = new WasmBattle(8000, 80000, 8000);
+      battle.load_warrior(imp);
+      battle.load_warrior(dwarf);
+
+      const result = battle.run_to_completion();
+      const warriorInfo = battle.get_warrior_info();
+      const events = battle.get_events_since(0);
+
+      output.textContent = JSON.stringify({
+        result,
+        warriorInfo,
+        eventCount: events.length,
+        firstEvent: events[0] ?? null,
+      }, null, 2);
+    } catch (error) {
+      output.textContent = String(error);
+      console.error(error);
+    }
+  </script>
+</body>
+</html>

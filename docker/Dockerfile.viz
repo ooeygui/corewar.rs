@@ -1,0 +1,28 @@
+ARG RUST_VERSION=1.82
+ARG APP_VERSION=0.1.0
+
+FROM rust:${RUST_VERSION}-slim-bookworm AS builder
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends build-essential ca-certificates curl pkg-config libssl-dev \
+    && rm -rf /var/lib/apt/lists/* \
+    && rustup target add wasm32-unknown-unknown \
+    && cargo install --locked wasm-pack
+WORKDIR /app
+COPY Cargo.toml Cargo.lock ./
+COPY crates ./crates
+COPY wasm ./wasm
+RUN wasm-pack build crates/corewar-viz --target web --out-dir ../../wasm/pkg -- --features wasm \
+    && cp wasm/index.html wasm/pkg/index.html
+
+FROM nginx:1.27-alpine
+ARG APP_VERSION
+LABEL maintainer="ooeygui" \
+      org.opencontainers.image.title="corewar-viz" \
+      org.opencontainers.image.description="Production CoreWar visualization frontend" \
+      org.opencontainers.image.version="${APP_VERSION}"
+RUN rm -f /etc/nginx/conf.d/default.conf
+COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/wasm/pkg/ /usr/share/nginx/html/pkg/
+COPY --from=builder /app/wasm/index.html /usr/share/nginx/html/index.html
+EXPOSE 8080
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 CMD wget -q --spider http://127.0.0.1:8080/healthz || exit 1

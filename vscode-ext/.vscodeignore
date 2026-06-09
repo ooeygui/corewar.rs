@@ -1,0 +1,10 @@
+src/
+!src/webview/
+!src/webview/*.html
+!src/webview/*.css
+node_modules/
+.vscode/
+*.ts
+!*.d.ts
+webpack.config.js
+tsconfig.json

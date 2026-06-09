@@ -1,0 +1,217 @@
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--vscode-editor-background);
+  color: var(--vscode-editor-foreground);
+  font-family: var(--vscode-font-family);
+  font-size: var(--vscode-font-size);
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  border: 1px solid var(--vscode-button-border, transparent);
+  background: var(--vscode-button-secondaryBackground, var(--vscode-button-background));
+  color: var(--vscode-button-secondaryForeground, var(--vscode-button-foreground));
+  border-radius: 4px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--vscode-button-secondaryHoverBackground, var(--vscode-button-hoverBackground));
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 1px solid var(--vscode-focusBorder);
+  outline-offset: 1px;
+}
+
+.battle-shell {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--vscode-panel-border);
+  background: var(--vscode-sideBar-background, var(--vscode-editor-background));
+  flex-wrap: wrap;
+}
+
+.speed-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 240px;
+}
+
+.speed-control input {
+  flex: 1;
+}
+
+.cycle-display {
+  margin-left: auto;
+  color: var(--vscode-descriptionForeground);
+}
+
+.battle-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  min-height: 0;
+  flex: 1;
+}
+
+.canvas-panel {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+#core-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+}
+
+#core-canvas:active {
+  cursor: grabbing;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  border-left: 1px solid var(--vscode-panel-border);
+  background: var(--vscode-sideBar-background, var(--vscode-editor-background));
+  overflow: auto;
+}
+
+.panel-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.panel-section h2 {
+  margin: 0;
+  font-size: 1em;
+}
+
+.warrior-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.warrior-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 8px;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid var(--vscode-panel-border);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--vscode-editor-background) 85%, white 15%);
+}
+
+.warrior-empty {
+  color: var(--vscode-descriptionForeground);
+}
+
+.warrior-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 15%);
+}
+
+.warrior-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.warrior-name {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.warrior-meta {
+  color: var(--vscode-descriptionForeground);
+  font-size: 0.9em;
+}
+
+.warrior-remove {
+  padding-inline: 8px;
+}
+
+.cell-inspector {
+  border: 1px solid var(--vscode-panel-border);
+  border-radius: 6px;
+  padding: 10px;
+  min-height: 88px;
+  background: color-mix(in srgb, var(--vscode-editor-background) 92%, white 8%);
+  color: var(--vscode-descriptionForeground);
+}
+
+.inspector-title {
+  color: var(--vscode-editor-foreground);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.inspector-line {
+  margin-bottom: 6px;
+}
+
+.inspector-code {
+  margin: 0;
+  white-space: pre-wrap;
+  font-family: var(--vscode-editor-font-family, var(--vscode-font-family));
+  color: var(--vscode-textPreformat-foreground, var(--vscode-editor-foreground));
+}
+
+@media (max-width: 900px) {
+  .battle-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+
+  .sidebar {
+    border-left: 0;
+    border-top: 1px solid var(--vscode-panel-border);
+    max-height: 40%;
+  }
+
+  .cycle-display {
+    width: 100%;
+    margin-left: 0;
+  }
+}

@@ -1,5 +1,5 @@
-use criterion::{black_box, criterion_group, criterion_main, Criterion};
 use corewar_vm::{Battle, VmConfig};
+use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
 fn bench_empty_battle(c: &mut Criterion) {
     c.bench_function("empty_battle_8000", |b| {

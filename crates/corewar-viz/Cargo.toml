@@ -7,6 +7,9 @@ license.workspace = true
 repository.workspace = true
 rust-version.workspace = true
 
+[lib]
+crate-type = ["cdylib", "rlib"]
+
 [features]
 default = ["native"]
 native = ["winit", "wgpu/metal", "wgpu/dx12"]
@@ -19,6 +22,9 @@ wgpu = { workspace = true }
 glam = { workspace = true }
 bytemuck = { workspace = true }
 tracing = { workspace = true }
+serde_json = { workspace = true }
+rmp-serde = { workspace = true }
+thiserror = { workspace = true }
 
 # Native-only
 winit = { workspace = true, optional = true }
@@ -26,7 +32,7 @@ winit = { workspace = true, optional = true }
 # WASM-only
 wasm-bindgen = { workspace = true, optional = true }
 wasm-bindgen-futures = { workspace = true, optional = true }
-web-sys = { workspace = true, optional = true, features = ["Window", "Document", "Element", "HtmlCanvasElement"] }
+web-sys = { workspace = true, optional = true, features = ["Window", "Document", "Element", "EventTarget", "Event", "HtmlCanvasElement", "MouseEvent", "WheelEvent", "KeyboardEvent", "WebSocket", "MessageEvent", "Navigator", "Gpu", "Location", "UrlSearchParams", "ErrorEvent", "BinaryType", "console"] }
 js-sys = { workspace = true, optional = true }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]

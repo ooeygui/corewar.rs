@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CoreWar Viz</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0d0d14;
+    }
+
+    body {
+      display: flex;
+    }
+
+    #corewar-canvas {
+      width: 100vw;
+      height: 100vh;
+      display: block;
+      flex: 1;
+      background: #0d0d14;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="corewar-canvas"></canvas>
+  <script type="module">
+    import init, { start } from "./pkg/corewar_viz.js";
+
+    const params = new URLSearchParams(window.location.search);
+    if (!params.has("server") && !params.has("ws")) {
+      const wsScheme = window.location.protocol === "https:" ? "wss" : "ws";
+      params.set("server", `${wsScheme}://${window.location.host}/ws`);
+      const query = params.toString();
+      window.history.replaceState(null, "", `${window.location.pathname}?${query}${window.location.hash}`);
+    }
+
+    await init();
+    await start();
+  </script>
+</body>
+</html>

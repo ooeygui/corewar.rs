@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; img-src {{cspSource}} data:; style-src {{cspSource}} 'unsafe-inline'; script-src 'nonce-{{nonce}}';"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CoreWar Battle Viewer</title>
+    <link rel="stylesheet" href="{{styleUri}}" />
+  </head>
+  <body>
+    <div class="battle-shell">
+      <header class="toolbar">
+        <button id="add-warrior-button" type="button">Add Warrior</button>
+        <button id="play-pause-button" type="button">Play ▶</button>
+        <button id="step-button" type="button">Step ⏭</button>
+        <button id="reset-button" type="button">Reset 🔄</button>
+        <label class="speed-control" for="speed-slider">
+          <span>Speed</span>
+          <input id="speed-slider" type="range" min="1" max="1000" value="60" />
+          <span id="speed-value">60x</span>
+        </label>
+        <div class="cycle-display">Cycle <strong id="cycle-counter">0</strong></div>
+      </header>
+      <div class="battle-layout">
+        <main class="canvas-panel">
+          <canvas id="core-canvas"></canvas>
+        </main>
+        <aside class="sidebar">
+          <section class="panel-section">
+            <h2>Warriors</h2>
+            <ul id="warrior-list" class="warrior-list"></ul>
+          </section>
+          <section class="panel-section">
+            <h2>Inspector</h2>
+            <div id="cell-inspector" class="cell-inspector">Click a core cell to inspect its instruction.</div>
+          </section>
+        </aside>
+      </div>
+    </div>
+    <script nonce="{{nonce}}" src="{{scriptUri}}"></script>
+  </body>
+</html>

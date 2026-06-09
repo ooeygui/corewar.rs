@@ -17,4 +17,28 @@ pub enum ParseError {
 
     #[error("invalid opcode '{opcode}' at line {line}")]
     InvalidOpcode { opcode: String, line: usize },
+
+    #[error("invalid modifier '{modifier}' at line {line}")]
+    InvalidModifier { modifier: String, line: usize },
+
+    #[error("invalid directive '{directive}' at line {line}")]
+    InvalidDirective { directive: String, line: usize },
+
+    #[error("invalid expression '{expression}' at line {line}")]
+    InvalidExpression { expression: String, line: usize },
+
+    #[error("circular EQU definition involving '{name}' at line {line}")]
+    CircularEqu { name: String, line: usize },
+
+    #[error("division by zero in expression at line {line}")]
+    DivisionByZero { line: usize },
+}
+
+impl ParseError {
+    pub(crate) fn syntax(line: usize, message: impl Into<String>) -> Self {
+        Self::Syntax {
+            line,
+            message: message.into(),
+        }
+    }
 }

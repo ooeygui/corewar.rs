@@ -7,17 +7,27 @@ license.workspace = true
 repository.workspace = true
 rust-version.workspace = true
 
+[lib]
+crate-type = ["cdylib", "rlib"]
+
 [features]
 default = ["std"]
-std = []
-wasm = ["wasm-bindgen"]
+std = ["dep:serde_json"]
+wasm = ["std", "wasm-bindgen", "dep:console_error_panic_hook", "dep:serde-wasm-bindgen"]
 
 [dependencies]
 corewar-core = { path = "../corewar-core", default-features = false }
 corewar-parser = { path = "../corewar-parser", default-features = false }
 rand = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true, optional = true }
 thiserror = { workspace = true }
 wasm-bindgen = { workspace = true, optional = true }
+console_error_panic_hook = { version = "0.1", optional = true }
+serde-wasm-bindgen = { version = "0.6", optional = true }
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+getrandom = { version = "0.2", features = ["js"] }
 
 [dev-dependencies]
 criterion = { workspace = true }

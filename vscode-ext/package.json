@@ -1,0 +1,134 @@
+{
+  "name": "corewar-redcode",
+  "displayName": "CoreWar Redcode",
+  "description": "Redcode language support and CoreWar battle visualization",
+  "publisher": "ooeygui",
+  "version": "0.1.0",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Debuggers",
+    "Visualization"
+  ],
+  "activationEvents": [
+    "onLanguage:redcode",
+    "onTaskType:corewar",
+    "onCommand:corewar.openBattleView",
+    "onCommand:corewar.addWarrior",
+    "onCommand:corewar.validateWarrior"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "redcode",
+        "aliases": [
+          "Redcode",
+          "redcode"
+        ],
+        "extensions": [
+          ".red",
+          ".rc"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "redcode",
+        "scopeName": "source.redcode",
+        "path": "./syntaxes/redcode.tmLanguage.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "corewar.openBattleView",
+        "title": "CoreWar: Open Battle Viewer"
+      },
+      {
+        "command": "corewar.validateWarrior",
+        "title": "CoreWar: Validate Warrior"
+      },
+      {
+        "command": "corewar.addWarrior",
+        "title": "CoreWar: Add Warrior to Battle"
+      }
+    ],
+    "taskDefinitions": [
+      {
+        "type": "corewar",
+        "required": [
+          "task"
+        ],
+        "properties": {
+          "task": {
+            "type": "string",
+            "enum": [
+              "validate",
+              "battle",
+              "build-wasm"
+            ]
+          },
+          "warriors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "coreSize": {
+            "type": "number"
+          },
+          "maxCycles": {
+            "type": "number"
+          }
+        }
+      }
+    ],
+    "problemMatchers": [
+      {
+        "name": "corewar",
+        "owner": "corewar",
+        "fileLocation": [
+          "relative",
+          "${workspaceFolder}"
+        ],
+        "pattern": {
+          "regexp": "^(.+):(\\d+):(\\d+):\\s+(error|warning):\\s+(.+)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "message": 5
+        }
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "corewar.openBattleView",
+          "when": "editorLangId == redcode",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "vsce package",
+    "lint": "eslint src"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "^20",
+    "typescript": "^5.3",
+    "webpack": "^5",
+    "webpack-cli": "^5",
+    "ts-loader": "^9",
+    "eslint": "^8",
+    "@typescript-eslint/eslint-plugin": "^6",
+    "@typescript-eslint/parser": "^6"
+  }
+}
