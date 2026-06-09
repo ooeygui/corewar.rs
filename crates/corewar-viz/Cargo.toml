@@ -1,0 +1,35 @@
+[package]
+name = "corewar-viz"
+description = "WebGPU visualization for CoreWar battles"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[features]
+default = ["native"]
+native = ["winit", "wgpu/metal", "wgpu/dx12"]
+wasm = ["wasm-bindgen", "wasm-bindgen-futures", "web-sys", "js-sys"]
+
+[dependencies]
+corewar-core = { path = "../corewar-core" }
+corewar-protocol = { path = "../corewar-protocol" }
+wgpu = { workspace = true }
+glam = { workspace = true }
+bytemuck = { workspace = true }
+tracing = { workspace = true }
+
+# Native-only
+winit = { workspace = true, optional = true }
+
+# WASM-only
+wasm-bindgen = { workspace = true, optional = true }
+wasm-bindgen-futures = { workspace = true, optional = true }
+web-sys = { workspace = true, optional = true, features = ["Window", "Document", "Element", "HtmlCanvasElement"] }
+js-sys = { workspace = true, optional = true }
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+tokio-tungstenite = { workspace = true }
+tokio = { workspace = true }
+futures-util = { workspace = true }

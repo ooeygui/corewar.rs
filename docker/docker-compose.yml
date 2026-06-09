@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  server:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.server
+    ports:
+      - "9000:9000"
+    volumes:
+      - leaderboard-data:/data
+    environment:
+      - RUST_LOG=info
+      - LEADERBOARD_PATH=/data/leaderboard.json
+
+volumes:
+  leaderboard-data:

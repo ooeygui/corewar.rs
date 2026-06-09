@@ -1,0 +1,18 @@
+[package]
+name = "corewar-orchestrator"
+description = "Tournament orchestrator managing multiple CoreWar instances"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+corewar-core = { path = "../corewar-core" }
+corewar-vm = { path = "../corewar-vm" }
+corewar-protocol = { path = "../corewar-protocol" }
+corewar-leaderboard = { path = "../corewar-leaderboard" }
+tokio = { workspace = true }
+rand = { workspace = true }
+tracing = { workspace = true }
+thiserror = { workspace = true }

@@ -1,0 +1,16 @@
+[package]
+name = "corewar-core"
+description = "Core types and memory model for the CoreWar system"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[features]
+default = ["std"]
+std = []
+
+[dependencies]
+serde = { workspace = true }
+thiserror = { workspace = true }

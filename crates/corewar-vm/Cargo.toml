@@ -1,0 +1,27 @@
+[package]
+name = "corewar-vm"
+description = "MARS virtual machine - CoreWar interpreter"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[features]
+default = ["std"]
+std = []
+wasm = ["wasm-bindgen"]
+
+[dependencies]
+corewar-core = { path = "../corewar-core", default-features = false }
+corewar-parser = { path = "../corewar-parser", default-features = false }
+rand = { workspace = true }
+thiserror = { workspace = true }
+wasm-bindgen = { workspace = true, optional = true }
+
+[dev-dependencies]
+criterion = { workspace = true }
+
+[[bench]]
+name = "vm_bench"
+harness = false
